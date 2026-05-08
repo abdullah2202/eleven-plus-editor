@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "NVRQuestionSchema",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "A unique identifier for the puzzle."
+        },
+        "shapeType": {
+            "type": "string",
+            "enum": [
+                "sequence",
+                "odd_one_out"
+            ],
+            "description": "The logic type of the puzzle."
+        },
+        "svgOptions": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+                "$ref": "#/definitions/svgItem"
+            },
+            "description": "Exactly 4 SVG options for the user to choose from."
+        },
+        "svgSequence": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+                "$ref": "#/definitions/svgItem"
+            },
+            "description": "The leading sequence of shapes (required for sequence types)."
+        },
+        "correctIndex": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "description": "index of the correct answer in svgOptions."
+        },
+        "explanation": {
+            "type": "string",
+            "description": "Educational text shown after the puzzle is solved."
+        }
+    },
+    "required": [
+        "id",
+        "shapeType",
+        "svgOptions",
+        "correctIndex",
+        "explanation"
+    ],
+    "definitions": {
+        "svgItem": {
+            "type": "object",
+            "properties": {
+                "svg": {
+                    "type": "string"
+                },
+                "viewBox": {
+                    "type": "string",
+                    "default": "0 0 64 64"
+                }
+            },
+            "required": [
+                "svg",
+                "viewBox"
+            ]
+        }
+    },
+    "if": {
+        "properties": {
+            "shapeType": {
+                "const": "sequence"
+            }
+        }
+    },
+    "then": {
+        "required": [
+            "svgSequence"
+        ]
+    }
+}
