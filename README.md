@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# Eleven Plus Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, premium web application designed to create and manage Verbal and Non-Verbal reasoning questions for educational applications.
 
-Currently, two official plugins are available:
+## 🌟 Purpose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The **Eleven Plus Editor** provides a streamlined interface for educators and content creators to build complex logic puzzles. It ensures that all generated questions adhere to strict JSON schemas while offering powerful visual tools for non-verbal reasoning.
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Question Editor
+- **Verbal Reasoning (VR)**: Create analogies, odd-one-out, synonyms, antonyms, and sequence puzzles.
+- **Non-Verbal Reasoning (NVR)**: Build visual puzzles with support for sequences and odd-one-out logic.
+- **Real-time Preview**: Live JSON code blocks show the exact structure of the data as you type.
+- **Schema Validation**: Built to output data compatible with standard reasoning app schemas.
 
-## Expanding the ESLint configuration
+### 2. Shape Editor
+- **SVG Drawing Canvas**: A custom-built SVG drawing tool to create visual components from scratch.
+- **Drawing Tools**: Rectangle, Circle, Triangle, and Line tools with an integrated Eraser.
+- **Styling**: Full control over stroke color, fill color, and line width.
+- **Rotation**: Rotate the entire canvas to create complex directional puzzles.
+- **SQLite Integration**: Save your custom shapes to a local library for reuse across different questions.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 3. Shape Library
+- **Centralized Management**: Browse all your saved custom SVGs in a compact grid view.
+- **Quick Export**: One-click "Copy SVG" to use your shapes in the NVR Question Editor.
+- **Persistent Storage**: Uses a local SQLite database (`server/shapes.db`) to keep your library safe.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
+- [Node.js](https://nodejs.org/) installed on your machine.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the App
+The app runs a concurrent setup with a Vite frontend and an Express backend:
+```bash
+npm run dev
 ```
+Navigate to [http://localhost:5173](http://localhost:5173) in your browser.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠 Technology Stack
+- **Frontend**: React 19, TypeScript, Vite, Framer Motion, Lucide Icons.
+- **Backend**: Node.js, Express.
+- **Database**: SQLite (via `better-sqlite3`).
+- **Styling**: Pure Vanilla CSS with a focus on Glassmorphism and modern Dark Mode aesthetics.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📁 Project Structure
+- `src/components`: UI components for editors and library.
+- `src/schemas`: JSON schemas for VR and NVR questions.
+- `server/`: Backend API and SQLite database configuration.
