@@ -16,7 +16,7 @@ export default function JSONPreview({ data }: Props) {
   };
 
   return (
-    <div className="relative flex-col" style={{ flex: 1, minHeight: '300px' }}>
+    <div className="relative flex-col" style={{ flex: 1, minHeight: '300px', maxWidth: '100%', overflow: 'hidden' }}>
       <button 
         className="secondary" 
         onClick={handleCopy}
@@ -39,6 +39,7 @@ export default function JSONPreview({ data }: Props) {
           borderRadius: '12px',
           fontSize: '0.9rem',
           overflow: 'auto',
+          maxWidth: '100%',
           flex: 1,
           border: '1px solid var(--border-glass)',
           margin: 0,

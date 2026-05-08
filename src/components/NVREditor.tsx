@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import type { NVRQuestion, NVRShapeType, SVGItem } from '../types';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import Modal from './Modal';
+import ShapeSelector from './ShapeSelector';
 
 interface Props {
   data: NVRQuestion;
@@ -7,6 +10,9 @@ interface Props {
 }
 
 export default function NVREditor({ data, onChange }: Props) {
+  const [selectorOpen, setSelectorOpen] = useState(false);
+  const [selectorTarget, setSelectorTarget] = useState<{ type: 'sequence' | 'option', index: number } | null>(null);
+
   const updateField = (field: keyof NVRQuestion, value: any) => {
     onChange({ ...data, [field]: value });
   };
@@ -31,6 +37,32 @@ export default function NVREditor({ data, onChange }: Props) {
   const removeSequenceItem = (index: number) => {
     const newSequence = (data.svgSequence || []).filter((_, i) => i !== index);
     updateField('svgSequence', newSequence);
+  };
+
+  const openSelector = (type: 'sequence' | 'option', index: number) => {
+    setSelectorTarget({ type, index });
+    setSelectorOpen(true);
+  };
+
+  const handleShapeSelect = (svgContent: string) => {
+    if (!selectorTarget) return;
+
+    if (selectorTarget.type === 'sequence') {
+      const newSequence = [...(data.svgSequence || [])];
+      newSequence[selectorTarget.index] = { 
+        svg: svgContent, 
+        viewBox: '0 0 500 500' // Shapes from editor are 500x500
+      };
+      updateField('svgSequence', newSequence);
+    } else {
+      const newOptions = [...data.svgOptions] as [SVGItem, SVGItem, SVGItem, SVGItem];
+      newOptions[selectorTarget.index] = { 
+        svg: svgContent, 
+        viewBox: '0 0 500 500' 
+      };
+      updateField('svgOptions', newOptions);
+    }
+    setSelectorOpen(false);
   };
 
   return (
@@ -63,12 +95,13 @@ export default function NVREditor({ data, onChange }: Props) {
                 <div style={{ height: '60px', background: 'white', borderRadius: '4px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg viewBox={item.viewBox} width="100%" height="100%" dangerouslySetInnerHTML={{ __html: item.svg }} />
                 </div>
-                <input 
-                  value={item.svg} 
-                  onChange={(e) => updateSequence(i, 'svg', e.target.value)} 
-                  placeholder="SVG Path"
-                  style={{ fontSize: '0.7rem', padding: '0.3rem' }}
-                />
+                <button 
+                  className="secondary"
+                  onClick={() => openSelector('sequence', i)}
+                  style={{ fontSize: '0.7rem', padding: '0.4rem' }}
+                >
+                  <ImageIcon size={12} /> Select Shape
+                </button>
               </div>
             ))}
           </div>
@@ -95,12 +128,13 @@ export default function NVREditor({ data, onChange }: Props) {
               <div style={{ height: '80px', background: 'white', borderRadius: '8px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg viewBox={option.viewBox} width="100%" height="100%" dangerouslySetInnerHTML={{ __html: option.svg }} />
               </div>
-              <textarea 
-                value={option.svg} 
-                onChange={(e) => updateOption(i, 'svg', e.target.value)} 
-                placeholder="SVG content (e.g. <circle ... />)"
-                style={{ fontSize: '0.8rem', minHeight: '60px' }}
-              />
+              <button 
+                className="secondary"
+                onClick={() => openSelector('option', i)}
+                style={{ fontSize: '0.8rem' }}
+              >
+                <ImageIcon size={14} /> Select Shape
+              </button>
             </div>
           ))}
         </div>
@@ -115,6 +149,14 @@ export default function NVREditor({ data, onChange }: Props) {
           placeholder="Explain the visual logic..."
         />
       </div>
+
+      <Modal 
+        isOpen={selectorOpen} 
+        onClose={() => setSelectorOpen(false)} 
+        title="Select Shape from Library"
+      >
+        <ShapeSelector onSelect={handleShapeSelect} />
+      </Modal>
     </div>
   );
 }

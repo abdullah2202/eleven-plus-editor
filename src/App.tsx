@@ -71,7 +71,7 @@ function App() {
       </div>
 
       <div className="grid-2">
-        <section className="glass p-8 flex-col gap-4">
+        <section className="glass p-8 flex-col gap-4" style={{ minWidth: 0 }}>
           <div className="flex justify-between items-center mb-4">
             <h2 className="flex items-center gap-2">
               <Layout size={20} className="text-accent-primary" />
@@ -105,7 +105,7 @@ function App() {
           </AnimatePresence>
         </section>
 
-        <section className="flex-col gap-4">
+        <section className="flex-col gap-4" style={{ minWidth: 0 }}>
           <div className="glass p-8 flex-col gap-4" style={{ flex: 1 }}>
             <h2 className="flex items-center gap-2 mb-4">
               <Code size={20} className="text-accent-primary" />
