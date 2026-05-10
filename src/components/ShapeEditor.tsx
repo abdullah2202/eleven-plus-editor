@@ -19,11 +19,12 @@ export default function ShapeEditor() {
   const [shapes, setShapes] = useState<SVGShape[]>([]);
   const [currentShape, setCurrentShape] = useState<SVGShape | null>(null);
   const [tool, setTool] = useState<Tool>('rect');
-  const [strokeColor, setStrokeColor] = useState('#ffffff');
+  const [strokeColor, setStrokeColor] = useState('#000000');
   const [fillColor, setFillColor] = useState('transparent');
   const [strokeWidth, setStrokeWidth] = useState(2);
   const [rotation, setRotation] = useState(0);
   const [shapeName, setShapeName] = useState('');
+  const [canvasBg, setCanvasBg] = useState('#ffffff');
   
   const svgRef = useRef<SVGSVGElement>(null);
   const isDrawing = useRef(false);
@@ -181,10 +182,15 @@ export default function ShapeEditor() {
           <span style={{ minWidth: '40px', textAlign: 'center' }}>{rotation}°</span>
           <button className="secondary" onClick={() => setRotation(r => r + 15)} style={{ padding: '0.3rem' }}><RotateCw size={16} /></button>
         </div>
+
+        <div className="flex items-center gap-2">
+          <label style={{ margin: 0 }}>Canvas:</label>
+          <input type="color" value={canvasBg} onChange={e => setCanvasBg(e.target.value)} style={{ padding: 0, width: '30px', height: '30px', border: 'none', background: 'transparent' }} />
+        </div>
       </div>
 
       <div className="flex justify-center">
-        <div className="glass" style={{ width: '500px', height: '500px', overflow: 'hidden', background: '#111' }}>
+        <div className="glass" style={{ width: '500px', height: '500px', overflow: 'hidden', background: canvasBg, transition: 'background 0.3s' }}>
           <svg 
             ref={svgRef}
             viewBox="0 0 500 500" 
